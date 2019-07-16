@@ -35,35 +35,35 @@ class Draw:
             'h':825
         }
         self.grams = g
-        self.setup()
-        self.create()
     
     def setup(self):
+        self.xpos = 0
+        self.ypos = 37.5
         self.img = Image.new('RGB',
                             (self.dim['w'],self.dim['h']),
                             (255,255,255,255))
         
     def create(self):
-        def lines(x,y,slice):
+        def lines(slice):
+            self.xpos = 0
             draw = ImageDraw.Draw(self.img)
             for c in slice[0]:
                 if c == 'A':
-                    draw.line((x,y,x+self.dim['w']/3,y),
+                    draw.line((self.xpos,self.ypos,
+                               self.xpos+self.dim['w']/3,self.ypos),
                               fill=0,
                               width=75)
-                    x += self.dim['w']/3
+                    self.xpos += self.dim['w']/3
                 if c == 'B':
-                    x += self.dim['w']/3
-            y += 150
-            return y
+                    self.xpos += self.dim['w']/3
+            self.ypos += 150
         count = 0
         for g in self.grams:
-            xpos = 0
-            ypos = 37.5
+            self.setup()
             gram = reduce(add,
                           (g))
             print count,':',gram
             for e in gram:
-                ypos = lines(xpos,ypos,e)
-            count += 1
+                lines(e)
             self.img.save('img/'+str(count).rjust(5,'0')+'.png')
+            count += 1
