@@ -9,7 +9,7 @@ def main(args):
     t = Trigram.Gram()
     f = t.evaluate(g[s])
     t.combine(f)
-    Trigram.Draw(t.grams)
+    Trigram.Draw(t.grams).create()
 
 if __name__== '__main__':
     main(sys.argv)

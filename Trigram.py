@@ -1,4 +1,6 @@
 from itertools import permutations
+from functools import reduce
+from operator import add
 from PIL import Image, ImageDraw
 
 class Gram:
@@ -21,32 +23,47 @@ class Gram:
         return [[l] for l in g]
     
     def combine(self,g):
-        self.grams = permutations(g,2)
+        grams = permutations(g,3)
+        self.grams = permutations(grams,2)
 
 class Draw:
 
     def __init__(self,g):
         self.img = None
-        self.x = 612
-        self.y = 750
-        self.line_height = 37.5
+        self.dim = {
+            'w':612,
+            'h':825
+        }
         self.grams = g
         self.setup()
         self.create()
     
     def setup(self):
         self.img = Image.new('RGB',
-                            (self.x,self.y),
+                            (self.dim['w'],self.dim['h']),
                             (255,255,255,255))
         
     def create(self):
-        def line(x,y,slice):
-            w,h = self.img.size
+        def lines(x,y,slice):
             draw = ImageDraw.Draw(self.img)
-            for c in slice:
-                print c
+            for c in slice[0]:
+                if c == 'A':
+                    draw.line((x,y,x+self.dim['w']/3,y),
+                              fill=0,
+                              width=75)
+                    x += self.dim['w']/3
+                if c == 'B':
+                    x += self.dim['w']/3
+            y += 150
+            return y
         count = 0
         for g in self.grams:
-            #g[0] = upper, g[1] = lower
-            for c in g:
-                line(x,y,c)
+            xpos = 0
+            ypos = 37.5
+            gram = reduce(add,
+                          (g))
+            print count,':',gram
+            for e in gram:
+                ypos = lines(xpos,ypos,e)
+            count += 1
+            self.img.save('img/'+str(count).rjust(5,'0')+'.png')
