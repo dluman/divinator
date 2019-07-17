@@ -21,6 +21,7 @@ class Gram:
     def evaluate(self,s):
         g = self.slice(s)
         g = self.pad(g)
+        g = list(dict.fromkeys(g))
         self.combine([[l] for l in g])
     
     def combine(self,g):
