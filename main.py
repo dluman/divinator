@@ -1,15 +1,15 @@
 import sys
 
+import Figure
 import Grammar
-import Trigram
+import System
 
 def main(args):
-    s = args[1]
-    g = Grammar.Rules(args[1]).apply()
-    t = Trigram.Gram()
-    f = t.evaluate(g[s])
-    t.combine(f)
-    Trigram.Draw(t.grams).create()
+    string = args[1]
+    grammar = Grammar.Rules(string).apply()
+    system = System.Gram()
+    system.evaluate(grammar[string])
+    Figure.Draw(system)
 
 if __name__== '__main__':
     main(sys.argv)

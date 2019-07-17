@@ -13,5 +13,8 @@ class Rules:
     def apply(self):
         t = self.s
         for rxp in self._regex:
-            t = re.sub(rxp,self._regex[rxp],t,flags=re.IGNORECASE)
+            t = re.sub(rxp,
+                       self._regex[rxp],
+                       t,
+                       flags=re.IGNORECASE)
         return {self.s:t}
