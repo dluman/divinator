@@ -1,3 +1,4 @@
+import Console
 from PIL import Image, ImageDraw
 
 class Draw:
@@ -42,11 +43,12 @@ class Draw:
                 self.xpos += self.dim[self.type]['w']/3
             self.ypos += 150
         count = 0
+        display = Console.Progress(len(set))
         for g in set:
-            print count,':',g
             self.type = self.folders[str(len(g))]
             self.setup()
             for elem in g:
                 lines(elem)
             self.img.save('img/'+self.type+'/'+str(count).rjust(5,'0')+'.png')
             count += 1
+            display.update(count,self.type)

@@ -1,4 +1,4 @@
-from itertools import permutations, product
+from itertools import product
 from functools import reduce
 from operator import add
 from PIL import Image, ImageDraw
