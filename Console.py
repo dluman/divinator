@@ -6,5 +6,5 @@ class Progress:
         self.total = total
         
     def update(self,idx,type):
-        sys.stdout.write("[%s] Progress: %d / %d \r" % (type,idx,self.total))
+        sys.stdout.write("[%s] Progress: %d / %d \r" % (type.upper(),idx,self.total))
         sys.stdout.flush()
