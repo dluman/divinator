@@ -9,7 +9,7 @@ def parse(values):
     text = values[1]
     try:
         fmt = values[2]
-    except KeyError:
+    except IndexError:
         fmt = None
     args = [text,fmt]
     return args
@@ -20,7 +20,6 @@ def main(args):
     grammar = Grammar.Rules(string).apply()
     system = System.Gram()
     system.evaluate(grammar[string])
-    print args
     if args[1] == 'polar':
         Figure.Polars(system)
     else:

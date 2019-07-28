@@ -1,3 +1,5 @@
+import cv2
+import numpy as np
 import Console
 from PIL import Image, ImageDraw
 
@@ -61,34 +63,35 @@ class Polars:
         self.create(figures.trigrams)
     
     def setup(self):
-        self.angle = 90
-        self.radius = 37.5
-        self.xpos = self.dim/2
-        self.ypos = self.xpos-self.radius
-        self.img = Image.new('RGB',
-                             (self.dim,self.dim),
-                             (255,255,255,255))
+        self.angle = 0
+        self.radius = 10
+        self.offset = self.radius
+        self.img = np.zeros((self.dim,self.dim,3),np.uint8)
+        self.img[:] = (255,255,255)
     
     def create(self,set):
         def arc(slice):
-            draw = ImageDraw.Draw(self.img)
-            draw.ellipse([(self.xpos,self.ypos),
-                          (-1*self.xpos,-1*self.ypos)],
-                          fill=0,
-                          outline=0)
+            xpos = int(self.dim/2)
+            ypos = xpos
+            angle = 120
+            print slice[0]
             for c in slice[0]:
                 if c == 'A':
-                    draw.arc([(self.xpos,self.ypos),
-                              (self.xpos+self.radius,self.ypos+self.radius)],
-                              self.angle,
-                              self.angle+90,
-                              fill=0)
-                self.xpos += self.radius
-                self.ypos += self.radius
-            self.angle -= 90
-            self.radius += self.radius/3
+                    cv2.ellipse(self.img,
+                                (xpos,ypos),
+                                (self.radius,self.radius),
+                                0,
+                                angle-120,
+                                angle,
+                                (0,0,0),
+                                thickness=2,
+                                lineType=cv2.LINE_AA)
+                print angle
+                angle += 120
+            cv2.imwrite('img/polar/test.png',self.img)
+        self.setup()
         for g in set:
-            self.setup()
+            print g
             for elem in g:
                 arc(elem)
-        self.img.save('img/polar/test.png')
+            self.radius += 10
