@@ -58,7 +58,7 @@ class Trigrams:
 class Polars:
 
     def __init__(self,figures):
-        self.dim = 825
+        self.dim = 2000
         self.img = None
         self.create(figures.trigrams)
     
@@ -80,18 +80,16 @@ class Polars:
                     cv2.ellipse(self.img,
                                 (xpos,ypos),
                                 (self.radius,self.radius),
-                                0,
+                                angle,
                                 angle-120,
                                 angle,
                                 (0,0,0),
                                 thickness=2,
                                 lineType=cv2.LINE_AA)
-                print angle
                 angle += 120
             cv2.imwrite('img/polar/test.png',self.img)
         self.setup()
         for g in set:
-            print g
             for elem in g:
                 arc(elem)
-            self.radius += 10
+                self.radius += 10
